@@ -47,7 +47,7 @@ import (
 
 func main() {
 	baseErr := xerrors.New("base error")
-	wrapErr := xerrors.Errorf("error in main method: %w", baseErr)
+	wrapErr := xerrors.Errorf("wrap error: %w", baseErr)
 	fmt.Printf("%+v\n", xerrors.Unwrap(wrapErr))
 }
 ```
@@ -75,7 +75,7 @@ func main() {
 	baseErr := xerrors.New("base error")
 	fmt.Println("xerrors.Is(baseErr, baseErr): ", xerrors.Is(baseErr, baseErr))
 
-	wrapErr := xerrors.Errorf("error in main method: %w", baseErr)
+	wrapErr := xerrors.Errorf("wrap error: %w", baseErr)
 	fmt.Println("xerrors.Is(wrapErr, baseErr): ", xerrors.Is(wrapErr, baseErr))
 }
 ```
@@ -89,4 +89,39 @@ xerrors.Is(wrapErr, baseErr):  true
 
 ## As
 
+```go
+package main
+
+import (
+	"fmt"
+
+	"golang.org/x/xerrors"
+)
+
+type err struct {
+	message string
+}
+
+func (e *err) Error() string {
+	return e.message
+}
+
+func main() {
+	baseErr := &err{"base error"}
+	wrapErr1 := xerrors.Errorf("wrap error1: %w", baseErr)
+	wrapErr2 := xerrors.Errorf("wrap error2: %w", wrapErr1)
+
+	var baseErr2 *err
+	if xerrors.As(wrapErr2, &baseErr2) {
+		fmt.Println("xerrors.As(wrapErr2, baseErr2): ", xerrors.As(wrapErr2, &baseErr2))
+		fmt.Printf("baseErr2: %+v", baseErr2)
+	}
+}
+```
+
 ### As Result
+
+```text
+xerrors.As(wrapErr2, baseErr2):  true
+baseErr2: base error
+```
