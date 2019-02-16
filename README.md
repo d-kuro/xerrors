@@ -14,8 +14,8 @@ import (
 
 func main() {
     baseErr := xerrors.New("base error")
-    wrapErr1 := xerrors.Errorf("wrap error1: %v",baseErr)
-    wrapErr2 := xerrors.Errorf("wrap error2: %v",wrapErr1)
+    wrapErr1 := xerrors.Errorf("wrap error1: %w",baseErr)
+    wrapErr2 := xerrors.Errorf("wrap error2: %w",wrapErr1)
     fmt.Printf("%+v\n", wrapErr2)
 }
 ```
