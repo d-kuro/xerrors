@@ -8,6 +8,6 @@ import (
 
 func main() {
 	baseErr := xerrors.New("base error")
-	wrapErr := xerrors.Errorf("error in main method: %w", baseErr)
+	wrapErr := xerrors.Errorf("wrap error: %w", baseErr)
 	fmt.Printf("%+v\n", xerrors.Unwrap(wrapErr))
 }
